@@ -8,24 +8,26 @@ import com.badlogic.gdx.math.Vector2;
 import ru.paalse.base.BaseScreen;
 import ru.paalse.math.Rect;
 import ru.paalse.sprite.Background;
+import ru.paalse.sprite.Pic;
 
 public class MenuScreen extends BaseScreen {
 
     private Texture img;
     private  Texture bg;
-    private Vector2 pos;
 
     private Background background;
+    private Pic pic;
+
+
 
     @Override
     public void show() {
         super.show();
         img = new Texture("badlogic.jpg");
         bg = new Texture("textures/bg.png");
-        pos = new Vector2();  // Вектор позиции картинки
 
         background = new Background(bg);
-
+        pic = new Pic(img);
     }
 
     @Override
@@ -34,9 +36,11 @@ public class MenuScreen extends BaseScreen {
         Gdx.gl.glClearColor(0.5f, 0.9f, 0.4f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        pic.update(delta);
+
         batch.begin();
         background.draw(batch);
-        batch.draw(img, pos.x, pos.y, 0.5f,0.5f);
+        pic.draw(batch);
         batch.end();
     }
 
@@ -51,10 +55,12 @@ public class MenuScreen extends BaseScreen {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
+        pic.resize(worldBounds);
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        return super.touchDown(touch, pointer, button);
+        pic.touchDown(touch, pointer, button);
+        return false;
     }
 }
