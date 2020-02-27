@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.paalse.base.BaseScreen;
 import ru.paalse.math.Rect;
 import ru.paalse.sprite.Background;
+import ru.paalse.sprite.MainShip;
 
 public class GameScreen extends BaseScreen {
 
@@ -17,12 +18,15 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
 
+    private MainShip mainShip;
+
     @Override
     public void show() {
         super.show();
         bg = new Texture("textures/bg.png");
         background = new Background(bg);
         atlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
+        mainShip = new MainShip(atlas);
     }
 
     @Override
@@ -35,6 +39,7 @@ public class GameScreen extends BaseScreen {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
+        mainShip.resize(worldBounds);
     }
 
     @Override
@@ -54,17 +59,20 @@ public class GameScreen extends BaseScreen {
         return super.keyUp(keycode);
     }
 
+
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        return super.touchDown(touch, pointer, button);
+        mainShip.touchDown(touch, pointer, button);
+        return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
-        return super.touchUp(touch, pointer, button);
+        return false;
     }
 
     private void update(float delta) {
+        mainShip.update(delta);
     }
 
     private void draw() {
@@ -72,6 +80,7 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
+        mainShip.draw(batch);
         batch.end();
     }
 }
