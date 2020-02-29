@@ -6,7 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import ru.paalse.base.Sprite;
 import ru.paalse.math.Rect;
 import ru.paalse.math.Rnd;
-
+/*
+Класс описывает объект "Звезда"
+ */
 public class Star extends Sprite {
 
     private static final float STAR_HEIGHT = 0.007f;

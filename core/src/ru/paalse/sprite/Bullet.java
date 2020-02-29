@@ -6,19 +6,33 @@ import com.badlogic.gdx.math.Vector2;
 import ru.paalse.base.Sprite;
 import ru.paalse.math.Rect;
 
+/**
+ * Класс описывает объект "Пуля"
+ */
 public class Bullet extends Sprite {
 
-    private Rect worldBounds;
-    private final Vector2 v;
-    private int damage;
-    private Sprite owner;
+    private Rect worldBounds;   // Границы игрового мира
+    private final Vector2 v;    // Вектор скорости
+    private int damage;         // Урон который пуля сможет наносить
+    private Sprite owner;       // Владелец пули
 
     public Bullet() {
         regions = new TextureRegion[1];
         v = new Vector2();
     }
 
-    public void set(
+    /**
+     * Метод установки параметров
+     *
+     * @param owner - владелец пули
+     * @param region - регион для пули
+     * @param pos0 - вектор начальной позиции
+     * @param v0 - начальная скорость
+     * @param height - размер пули
+     * @param worldBounds - границы мира
+     * @param damage - урон который пуля может наносить
+     */
+     public void set(
             Sprite owner,
             TextureRegion region,
             Vector2 pos0,

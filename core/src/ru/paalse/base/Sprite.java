@@ -13,7 +13,7 @@ public abstract class Sprite extends Rect {
     protected float scale = 1f;
     protected TextureRegion[] regions;
     protected int frame;
-    protected boolean destroyed;
+    protected boolean destroyed; // Состояние объекта
 
     public Sprite() {
     }

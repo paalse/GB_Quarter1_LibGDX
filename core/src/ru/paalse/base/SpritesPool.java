@@ -5,6 +5,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Базовый класс для пулов спрайтов
+ *
+ * @param <T>
+ */
 public abstract class SpritesPool<T extends Sprite> {
 
     private final List<T> activeObjects = new ArrayList<>();
@@ -25,6 +30,11 @@ public abstract class SpritesPool<T extends Sprite> {
         return object;
     }
 
+    /**
+     * Обновление всех активных спрайтов
+     *
+     * @param delta
+     */
     public void updateActiveSprites(float delta) {
         for (Sprite sprite : activeObjects) {
             if (!sprite.isDestroyed()) {
@@ -33,6 +43,11 @@ public abstract class SpritesPool<T extends Sprite> {
         }
     }
 
+    /**
+     * Отрисовка всех активных спрайтов
+     *
+     * @param batch
+     */
     public void drawActiveSprites(SpriteBatch batch) {
         for (Sprite sprite : activeObjects) {
             if (!sprite.isDestroyed()) {
@@ -41,6 +56,9 @@ public abstract class SpritesPool<T extends Sprite> {
         }
     }
 
+    /**
+     * Освобождение всех разрушенных объектов
+     */
     public void freeAllDestroyedActiveObjects() {
         for (int i = 0; i < activeObjects.size(); i++) {
             T sprite = activeObjects.get(i);
@@ -61,6 +79,11 @@ public abstract class SpritesPool<T extends Sprite> {
         return activeObjects;
     }
 
+    /**
+     * Освобождение объектов
+     *
+     * @param object
+     */
     private void free(T object) {
         if (activeObjects.remove(object)) {
             freeObjects.add(object);

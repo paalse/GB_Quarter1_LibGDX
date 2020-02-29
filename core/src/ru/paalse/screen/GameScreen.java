@@ -98,6 +98,9 @@ public class GameScreen extends BaseScreen {
         bulletPool.updateActiveSprites(delta);
     }
 
+    /**
+     * Удаление всех дестроенных объектов
+     */
     private void freeAllDestroyed() {
         bulletPool.freeAllDestroyedActiveObjects();
     }

@@ -9,6 +9,9 @@ import ru.paalse.base.Sprite;
 import ru.paalse.math.Rect;
 import ru.paalse.pool.BulletPool;
 
+/*
+Класс описывает корабль игрока
+ */
 public class MainShip extends Sprite {
 
     private static final int INVALID_POINTER = -1;
@@ -56,6 +59,13 @@ public class MainShip extends Sprite {
         }
     }
 
+    /**
+     * Обработка нажатия кнопки мыши
+     *
+     * @param touch
+     * @param pointer
+     * @param button
+     */
     @Override
     public void touchDown(Vector2 touch, int pointer, int button) {
         if (touch.x < worldBounds.pos.x) {
@@ -73,6 +83,13 @@ public class MainShip extends Sprite {
         }
     }
 
+    /**
+     * Обработка отпускания кнопки мыши
+     *
+     * @param touch
+     * @param pointer
+     * @param button
+     */
     @Override
     public void touchUp(Vector2 touch, int pointer, int button) {
         if (pointer == leftPointer) {
@@ -92,6 +109,11 @@ public class MainShip extends Sprite {
         }
     }
 
+    /**
+     * Обработка нажатич кнопки
+     *
+     * @param keycode
+     */
     public void keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.A:
@@ -109,6 +131,11 @@ public class MainShip extends Sprite {
         }
     }
 
+    /**
+     * Обработка отпускания кнопки
+     *
+     * @param keycode
+     */
     public void keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.A:
@@ -132,18 +159,30 @@ public class MainShip extends Sprite {
         }
     }
 
+    /**
+     * Движение корабля вправо
+     */
     private void moveRight() {
         v.set(v0);
     }
 
+    /**
+     * Движение корабля влево
+     */
     private void moveLeft() {
         v.set(v0).rotate(180);
     }
 
+    /**
+     * Остановка движения корабля
+     */
     private void stop() {
         v.setZero();
     }
 
+    /**
+     * Метод реализует стрельбу
+     */
     private void shoot() {
         Bullet bullet = bulletPool.obtain();
         bulletPos.set(pos.x, getTop());
