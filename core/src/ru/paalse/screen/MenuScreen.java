@@ -62,6 +62,7 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         bg.dispose();
         atlas.dispose();
+        sound.dispose();
         super.dispose();
     }
 
