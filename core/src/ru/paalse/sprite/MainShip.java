@@ -1,12 +1,15 @@
 package ru.paalse.sprite;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.paalse.base.Sprite;
 import ru.paalse.math.Rect;
+import ru.paalse.math.Rnd;
 import ru.paalse.pool.BulletPool;
 
 /*
@@ -31,12 +34,19 @@ public class MainShip extends Sprite {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
+    private Sound bulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));;
+
+    private float animateTimer;
+    private float animateInterval = 1f;
+
+
     public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletV = new Vector2(0, 0.5f);
         this.bulletPos = new Vector2();
+        animateTimer = Rnd.nextFloat(0, 1f);
     }
 
     @Override
@@ -48,6 +58,7 @@ public class MainShip extends Sprite {
 
     @Override
     public void update(float delta) {
+       // Обновление движения корабля в право и в лево с учетом границ мира и корабля
         pos.mulAdd(v, delta);
         if (getRight() > worldBounds.getRight()) {
             setRight(worldBounds.getRight());
@@ -56,6 +67,13 @@ public class MainShip extends Sprite {
         if (getLeft() < worldBounds.getLeft()) {
             setLeft(worldBounds.getLeft());
             stop();
+        }
+
+        // Автоматическая стрельба
+        animateTimer += 0.05;
+        if (animateTimer >= animateInterval) {
+            animateTimer = 0;
+            shoot();
         }
     }
 
@@ -187,5 +205,6 @@ public class MainShip extends Sprite {
         Bullet bullet = bulletPool.obtain();
         bulletPos.set(pos.x, getTop());
         bullet.set(this, bulletRegion, bulletPos, bulletV, 0.01f, worldBounds, 1);
+        bulletSound.play();
     }
 }
