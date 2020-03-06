@@ -16,7 +16,7 @@ public class BaseScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
 
     private Rect screenBounds;
-    private Rect worldBounds;
+    protected Rect worldBounds;
     private Rect glBounds;
 
     private Vector2 touch;
@@ -51,7 +51,7 @@ public class BaseScreen implements Screen, InputProcessor {
 
         worldBounds.setHeight(1f);
         float aspect = width / (float) height;
-        worldBounds.setWidth(1f * aspect);
+        worldBounds.setWidth(1f* aspect);
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         batch.setProjectionMatrix(worldToGl);

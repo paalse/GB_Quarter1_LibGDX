@@ -13,7 +13,7 @@ public abstract class Sprite extends Rect {
     protected float scale = 1f;
     protected TextureRegion[] regions;
     protected int frame;
-    protected boolean destroyed; // Состояние объекта
+    protected boolean destroyed;
 
     public Sprite() {
     }
@@ -50,30 +50,15 @@ public abstract class Sprite extends Rect {
         setWidth(height * aspect);
     }
 
-    public void resize(Rect worldBounds) {
-    }
+    public void resize(Rect worldBounds) {};
 
-    ;
+    public void touchDown(Vector2 touch, int pointer, int button) {};
 
-    public void touchDown(Vector2 touch, int pointer, int button) {
-    }
+    public void touchUp(Vector2 touch, int pointer, int button) {};
 
-    ;
+    public void touchDragged(Vector2 touch, int pointer) {};
 
-    public void touchUp(Vector2 touch, int pointer, int button) {
-    }
-
-    ;
-
-    public void touchDragged(Vector2 touch, int pointer) {
-    }
-
-    ;
-
-    public void update(float delta) {
-    }
-
-    ;
+    public void update(float delta) {};
 
     public float getAngle() {
         return angle;

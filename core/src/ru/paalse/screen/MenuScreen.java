@@ -2,7 +2,6 @@ package ru.paalse.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,11 +29,9 @@ public class MenuScreen extends BaseScreen {
 
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
-    private Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/music.mp3"));
 
     public MenuScreen(Game game) {
         this.game = game;
-        sound.play();
     }
 
     @Override
@@ -62,7 +59,6 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         bg.dispose();
         atlas.dispose();
-        sound.dispose();
         super.dispose();
     }
 

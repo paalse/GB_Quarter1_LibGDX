@@ -2,51 +2,37 @@ package ru.paalse.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.paalse.base.Sprite;
+import ru.paalse.base.Ship;
 import ru.paalse.math.Rect;
-import ru.paalse.math.Rnd;
 import ru.paalse.pool.BulletPool;
+import ru.paalse.pool.ExplosionPool;
 
-/*
-Класс описывает корабль игрока
- */
-public class MainShip extends Sprite {
+public class MainShip extends Ship {
 
     private static final int INVALID_POINTER = -1;
-
-    private final Vector2 v = new Vector2();
-    private final Vector2 v0 = new Vector2(0.5f, 0);
-
-    private Rect worldBounds;
-
-    private BulletPool bulletPool;
-    private TextureRegion bulletRegion;
-    private final Vector2 bulletV;
-    private final Vector2 bulletPos;
 
     private boolean pressedLeft;
     private boolean pressedRight;
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
-    private Sound bulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));;
-
-    private float animateTimer;
-    private float animateInterval = 1f;
-
-
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
+        this.v = new Vector2();
+        this.v0 = new Vector2(0.5f, 0);
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
         this.bulletV = new Vector2(0, 0.5f);
         this.bulletPos = new Vector2();
-        animateTimer = Rnd.nextFloat(0, 1f);
+        this.bulletHeight = 0.01f;
+        this.damage = 1;
+        this.reloadInterval = 0.2f;
+        this.hp = 100;
+        this.shootSound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
     }
 
     @Override
@@ -58,8 +44,8 @@ public class MainShip extends Sprite {
 
     @Override
     public void update(float delta) {
-       // Обновление движения корабля в право и в лево с учетом границ мира и корабля
-        pos.mulAdd(v, delta);
+        bulletPos.set(pos.x, getTop());
+        super.update(delta);
         if (getRight() > worldBounds.getRight()) {
             setRight(worldBounds.getRight());
             stop();
@@ -68,22 +54,8 @@ public class MainShip extends Sprite {
             setLeft(worldBounds.getLeft());
             stop();
         }
-
-        // Автоматическая стрельба
-        animateTimer += 0.05;
-        if (animateTimer >= animateInterval) {
-            animateTimer = 0;
-            shoot();
-        }
     }
 
-    /**
-     * Обработка нажатия кнопки мыши
-     *
-     * @param touch
-     * @param pointer
-     * @param button
-     */
     @Override
     public void touchDown(Vector2 touch, int pointer, int button) {
         if (touch.x < worldBounds.pos.x) {
@@ -101,13 +73,6 @@ public class MainShip extends Sprite {
         }
     }
 
-    /**
-     * Обработка отпускания кнопки мыши
-     *
-     * @param touch
-     * @param pointer
-     * @param button
-     */
     @Override
     public void touchUp(Vector2 touch, int pointer, int button) {
         if (pointer == leftPointer) {
@@ -127,11 +92,6 @@ public class MainShip extends Sprite {
         }
     }
 
-    /**
-     * Обработка нажатич кнопки
-     *
-     * @param keycode
-     */
     public void keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.A:
@@ -149,11 +109,6 @@ public class MainShip extends Sprite {
         }
     }
 
-    /**
-     * Обработка отпускания кнопки
-     *
-     * @param keycode
-     */
     public void keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.A:
@@ -177,34 +132,15 @@ public class MainShip extends Sprite {
         }
     }
 
-    /**
-     * Движение корабля вправо
-     */
     private void moveRight() {
         v.set(v0);
     }
 
-    /**
-     * Движение корабля влево
-     */
     private void moveLeft() {
         v.set(v0).rotate(180);
     }
 
-    /**
-     * Остановка движения корабля
-     */
     private void stop() {
         v.setZero();
-    }
-
-    /**
-     * Метод реализует стрельбу
-     */
-    private void shoot() {
-        Bullet bullet = bulletPool.obtain();
-        bulletPos.set(pos.x, getTop());
-        bullet.set(this, bulletRegion, bulletPos, bulletV, 0.01f, worldBounds, 1);
-        bulletSound.play();
     }
 }
