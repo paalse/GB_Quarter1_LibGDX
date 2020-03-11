@@ -30,10 +30,16 @@ public class Enemy extends Ship {
     public void update(float delta) {
         bulletPos.set(pos.x, getBottom());
         super.update(delta);
+        if (getTop() < worldBounds.getTop()) {
+            v.set(v0);
+        } else {
+            v.set(0f, -0.2f);           // Начальная скорость кораблей пока не вылезли из-за экрана
+        }
         if (getBottom() < worldBounds.getBottom()) {
             destroy();
         }
     }
+
 
     public void set(
             TextureRegion[] regions,

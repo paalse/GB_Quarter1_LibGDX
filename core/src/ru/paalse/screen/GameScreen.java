@@ -8,12 +8,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.List;
+
 import ru.paalse.base.BaseScreen;
 import ru.paalse.math.Rect;
 import ru.paalse.pool.BulletPool;
 import ru.paalse.pool.EnemyPool;
 import ru.paalse.pool.ExplosionPool;
 import ru.paalse.sprite.Background;
+import ru.paalse.sprite.Enemy;
 import ru.paalse.sprite.MainShip;
 import ru.paalse.sprite.Star;
 import ru.paalse.utils.EnemiesEmitter;
@@ -65,6 +68,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         update(delta);
+        checkCollisions();
         freeAllDestroyed();
         draw();
     }
@@ -138,8 +142,17 @@ public class GameScreen extends BaseScreen {
         enemiesEmitter.generate(delta);
     }
 
+    /**
+     * Проверка столкновения
+     */
     private void checkCollisions() {
         //TODO место для ДЗ
+        List<Enemy> listOfEmeny = enemyPool.getActiveObjects();
+        for (Enemy e : listOfEmeny) {
+            if (!mainShip.isOutside(e)) {
+                e.destroy();
+            }
+        }
     }
 
     private void freeAllDestroyed() {
