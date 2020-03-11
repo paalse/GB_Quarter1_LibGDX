@@ -9,6 +9,10 @@ import ru.paalse.math.Rect;
 import ru.paalse.pool.BulletPool;
 import ru.paalse.pool.ExplosionPool;
 
+/**
+ * Класс для вражеских кораблей
+ */
+
 public class Enemy extends Ship {
 
     public Enemy(BulletPool bulletPool, ExplosionPool explosionPool, Sound shootSound, Rect worldBounds) {

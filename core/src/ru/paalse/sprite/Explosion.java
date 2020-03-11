@@ -6,6 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.paalse.base.Sprite;
 
+/**
+ * Класс для взрыва
+ */
 public class Explosion extends Sprite {
 
     private float animateInterval = 0.017f;
