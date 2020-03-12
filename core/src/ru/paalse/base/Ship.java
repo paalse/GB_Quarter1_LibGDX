@@ -42,10 +42,12 @@ public class Ship extends Sprite {
     @Override
     public void update(float delta) {
         pos.mulAdd(v, delta);
-        reloadTimer += delta;
-        if (reloadTimer >= reloadInterval) {
-            reloadTimer = 0f;
-            shoot();
+        if (getTop() < worldBounds.getTop()) {      // Стреляем только когда корабль залетел на экран
+            reloadTimer += delta;
+            if (reloadTimer >= reloadInterval) {
+                reloadTimer = 0f;
+                shoot();
+            }
         }
     }
 
