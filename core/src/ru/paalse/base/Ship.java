@@ -12,6 +12,8 @@ import ru.paalse.sprite.Explosion;
 
 public class Ship extends Sprite {
 
+    protected final float DAMAGE_ANIMATE_INTERVAL = 0.1f;
+
     protected Vector2 v;
     protected Vector2 v0;
 
@@ -28,6 +30,8 @@ public class Ship extends Sprite {
     protected float reloadInterval;
     protected float reloadTimer;
 
+    protected float damageAnimateTimer = DAMAGE_ANIMATE_INTERVAL;
+
     protected Sound shootSound;
 
     protected int hp;
@@ -42,12 +46,14 @@ public class Ship extends Sprite {
     @Override
     public void update(float delta) {
         pos.mulAdd(v, delta);
-        if (getTop() < worldBounds.getTop()) {      // Стреляем только когда корабль залетел на экран
-            reloadTimer += delta;
-            if (reloadTimer >= reloadInterval) {
-                reloadTimer = 0f;
-                shoot();
-            }
+        reloadTimer += delta;
+        if (reloadTimer >= reloadInterval) {
+            reloadTimer = 0f;
+            shoot();
+        }
+        damageAnimateTimer += delta;
+        if (damageAnimateTimer >= DAMAGE_ANIMATE_INTERVAL) {
+            frame = 0;
         }
     }
 
@@ -58,7 +64,21 @@ public class Ship extends Sprite {
     @Override
     public void destroy() {
         super.destroy();
+        this.hp = 0;
         boom();
+    }
+
+    public void damage(int damage) {
+        this.hp -= damage;
+        if (hp <= 0) {
+            destroy();
+        }
+        damageAnimateTimer = 0f;
+        frame = 1;
+     }
+
+    public int getDamage() {
+        return damage;
     }
 
     protected void shoot() {

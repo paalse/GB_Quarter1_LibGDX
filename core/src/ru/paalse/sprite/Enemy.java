@@ -9,11 +9,9 @@ import ru.paalse.math.Rect;
 import ru.paalse.pool.BulletPool;
 import ru.paalse.pool.ExplosionPool;
 
-/**
- * Класс для вражеских кораблей
- */
-
 public class Enemy extends Ship {
+
+    private final Vector2 descentV;
 
     public Enemy(BulletPool bulletPool, ExplosionPool explosionPool, Sound shootSound, Rect worldBounds) {
         this.bulletPool = bulletPool;
@@ -24,6 +22,7 @@ public class Enemy extends Ship {
         this.v0 = new Vector2();
         this.bulletV = new Vector2();
         this.bulletPos = new Vector2();
+        this.descentV = new Vector2(0, -0.3f);
     }
 
     @Override
@@ -33,13 +32,12 @@ public class Enemy extends Ship {
         if (getTop() < worldBounds.getTop()) {
             v.set(v0);
         } else {
-            v.set(0f, -0.2f);           // Начальная скорость кораблей пока не вылезли из-за экрана
+            this.reloadTimer = reloadInterval*0.9f;
         }
         if (getBottom() < worldBounds.getBottom()) {
             destroy();
         }
     }
-
 
     public void set(
             TextureRegion[] regions,
@@ -59,9 +57,17 @@ public class Enemy extends Ship {
         this.bulletV.set(0, bulletVY);
         this.damage = damage;
         this.reloadInterval = reloadInterval;
-        this.reloadTimer = reloadInterval;
+        this.reloadTimer = 0f;
         setHeightProportion(height);
         this.hp = hp;
-        v.set(v0);
+        v.set(descentV);
     }
+
+    public boolean isBulletCollision(Rect bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() < pos.y);
+    }
+
 }
