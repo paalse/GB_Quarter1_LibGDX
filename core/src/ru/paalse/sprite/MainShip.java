@@ -35,6 +35,11 @@ public class MainShip extends Ship {
         this.shootSound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
     }
 
+    public void NewGame() {
+        this.hp = 10;
+        flushDestroy();
+    }
+
     @Override
     public void resize(Rect worldBounds) {
         this.worldBounds = worldBounds;
