@@ -17,6 +17,7 @@ import ru.paalse.pool.EnemyPool;
 import ru.paalse.pool.ExplosionPool;
 import ru.paalse.sprite.Background;
 import ru.paalse.sprite.Bullet;
+import ru.paalse.sprite.ButtonNewGame;
 import ru.paalse.sprite.Enemy;
 import ru.paalse.sprite.MainShip;
 import ru.paalse.sprite.MessageGameOver;
@@ -52,6 +53,8 @@ public class GameScreen extends BaseScreen {
 
     private MessageGameOver messageGameOver;
 
+    private ButtonNewGame buttonNewGame;
+
     @Override
     public void show() {
         super.show();
@@ -73,7 +76,17 @@ public class GameScreen extends BaseScreen {
         music.setLooping(true);
         music.play();
         messageGameOver = new MessageGameOver(atlas);
+
         state = State.PLAYING;
+        buttonNewGame = new ButtonNewGame(atlas, this);
+    }
+
+    public void NewGame() {
+        state = State.PLAYING;
+        mainShip.NewGame();
+        bulletPool.freeAllActiveObjects();
+        enemyPool.freeAllActiveObjects();
+        explosionPool.freeAllActiveObjects();
     }
 
     @Override
@@ -93,6 +106,7 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.resize(worldBounds);
         messageGameOver.resize(worldBounds);
+        buttonNewGame.resize(worldBounds);
     }
 
     @Override
@@ -142,6 +156,8 @@ public class GameScreen extends BaseScreen {
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         if (state == State.PLAYING) {
             mainShip.touchDown(touch, pointer, button);
+        } else if (state == State.GAME_OVER) {
+            buttonNewGame.touchDown(touch, pointer, button);
         }
         return false;
     }
@@ -150,6 +166,8 @@ public class GameScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         if (state == State.PLAYING) {
             mainShip.touchUp(touch, pointer, button);
+        } else if (state == State.GAME_OVER) {
+            buttonNewGame.touchUp(touch, pointer, button);
         }
         return false;
     }
@@ -221,6 +239,7 @@ public class GameScreen extends BaseScreen {
             enemyPool.drawActiveSprites(batch);
         } else if (state == State.GAME_OVER) {
             messageGameOver.draw(batch);
+            buttonNewGame.draw(batch);
         }
         batch.end();
     }
