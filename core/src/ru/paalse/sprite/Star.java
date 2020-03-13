@@ -3,8 +3,8 @@ package ru.paalse.sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.paalse.base.Sprite;
 import ru.paalse.math.Rect;
+import ru.paalse.base.Sprite;
 import ru.paalse.math.Rnd;
 
 public class Star extends Sprite {
